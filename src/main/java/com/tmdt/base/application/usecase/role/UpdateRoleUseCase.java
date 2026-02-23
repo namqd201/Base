@@ -70,9 +70,6 @@ public class UpdateRoleUseCase {
         entityManager.flush();
         entityManager.clear();
 
-        // insert new
-        Set<Long> uniqueIds = new HashSet<>(permissionIds);
-
         if (permissionIds != null) {
 
             for (Long pid : permissionIds) {

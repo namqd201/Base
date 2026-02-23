@@ -29,7 +29,7 @@ public class UpdatePermissionUseCase {
         }
 
         Long userId = currentSession.getCurrentUserId();
-        
+
         permission.setPermissionName(permissionName);
         permission.setUpdatedAt(LocalDateTime.now());
         permission.setUpdatedBy(userId);
