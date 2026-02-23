@@ -16,6 +16,6 @@ import java.util.Set;
 @Entity
 @Table(name = "role")
 public class Role extends BaseEntity{
-    @Column(name = "role_name", nullable = false)
+    @Column(name = "role_name", nullable = false, unique = true, length = 50)
     private String roleName;
 }

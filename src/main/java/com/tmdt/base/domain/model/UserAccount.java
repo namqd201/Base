@@ -19,7 +19,7 @@ public class UserAccount extends BaseEntity{
     @Column(nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String password;
 
     @Column(name = "display_name", nullable = false, length = 50)
@@ -33,6 +33,8 @@ public class UserAccount extends BaseEntity{
 
     @Column(name = "phone_number", nullable = false, length = 10)
     private String phoneNumber;
+
+    private String avatar;
 
     @ManyToMany
     @JoinTable(
