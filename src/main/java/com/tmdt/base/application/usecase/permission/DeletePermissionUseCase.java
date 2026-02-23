@@ -16,14 +16,15 @@ public class DeletePermissionUseCase {
         this.permissionRepository = permissionRepository;
     }
 
-    public void execute(Long id, Long deletedBy) {
+    public void execute(Long id) {
         Permission permission = permissionRepository
                 .findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new PermissionNotFoundException(id));
 
         permission.setIsDeleted(true);
         permission.setDeletedAt(LocalDateTime.now());
-        permission.setDeletedBy(deletedBy);
+        //TODO
+//        permission.setDeletedBy(deletedBy);
 
         permissionRepository.save(permission);
     }

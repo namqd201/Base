@@ -1,10 +1,10 @@
 package com.tmdt.base.presentation.controller;
 
+import com.tmdt.base.application.dto.PermissionDto;
 import com.tmdt.base.application.usecase.permission.*;
 import com.tmdt.base.domain.model.Permission;
 import com.tmdt.base.presentation.dto.permission.CreatePermissionRequest;
 import com.tmdt.base.presentation.dto.permission.UpdatePermissionRequest;
-import com.tmdt.base.shared.response.AllPageResponse;
 import com.tmdt.base.shared.response.PageResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -73,6 +73,7 @@ public class PermissionController {
     public ResponseEntity<Void> delete(
             @PathVariable Long id
     ) {
+        deleteUseCase.execute(id);
         return ResponseEntity.ok().build();
     }
 
@@ -90,8 +91,8 @@ public class PermissionController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(), mediaType = "application/json") }),
             @ApiResponse(responseCode = "400", content = { @Content(schema = @Schema()) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<AllPageResponse<Permission>> getAll() {
-        List<Permission> findAll = getAllUseCase.findAll();
-        return ResponseEntity.ok().body(new AllPageResponse<>(findAll, findAll.size()));
+    public ResponseEntity<List<PermissionDto>> getAll() {
+        List<PermissionDto> findAll = getAllUseCase.findAll();
+        return ResponseEntity.ok(findAll);
     }
 }
