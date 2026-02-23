@@ -22,6 +22,11 @@ public class UserAccountRepositoryImpl implements UserAccountRepository {
     }
 
     @Override
+    public Optional<UserAccount> findByUsernameWithRolesAndPermissions(String username) {
+        return jpaRepository.findByUsernameWithRolesAndPermissions(username);
+    }
+
+    @Override
     public UserAccount save(UserAccount userAccount) {
         return jpaRepository.save(userAccount);
     }

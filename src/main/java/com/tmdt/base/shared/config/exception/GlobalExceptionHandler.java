@@ -26,6 +26,20 @@ public class GlobalExceptionHandler {
                 .body(Map.of("error", ex.getMessage()));
     }
 
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleRoleNotFound(RoleNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(RoleNameAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleRoleNameAlreadyExists(RoleNameAlreadyExistsException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("error", ex.getMessage()));
+    }
+
     @ExceptionHandler(InvalidCredentialException.class)
     public ResponseEntity<Map<String, String>> handleInvalidCredential(InvalidCredentialException ex) {
         return ResponseEntity

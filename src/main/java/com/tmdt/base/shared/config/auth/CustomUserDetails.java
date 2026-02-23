@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,26 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        
         Set<Role> roles = user.getRoles();
-        return roles.stream()
+        
+        // Add Role authorities
+        roles.stream()
                 .map(Role::getRoleName)
                 .map(roleName -> roleName.startsWith("ROLE_") ? roleName : "ROLE_" + roleName)
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toSet());
+                .forEach(authorities::add);
+        
+        // Add Permission authorities from role_permission
+        roles.stream()
+                .flatMap(role -> role.getRolePermissions().stream())
+                .filter(rolePermission -> rolePermission.getPermission() != null)
+                .map(rolePermission -> rolePermission.getPermission().getPermissionName())
+                .map(SimpleGrantedAuthority::new)
+                .forEach(authorities::add);
+        
+        return authorities;
     }
 
     @Override

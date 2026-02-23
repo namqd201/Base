@@ -1,9 +1,6 @@
 package com.tmdt.base.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +18,10 @@ public class RolePermission extends BaseIdEntity {
 
     @Column(name = "role_id", nullable = false)
     private Long roleId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "permission_id", nullable = false, insertable = false, updatable = false)
+    private Permission permission;
 
     @Column(name = "permission_id", nullable = false)
     private Long permissionId;

@@ -18,4 +18,8 @@ import java.util.Set;
 public class Role extends BaseEntity{
     @Column(name = "role_name", nullable = false, unique = true, length = 50)
     private String roleName;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Set<RolePermission> rolePermissions = new HashSet<>();
 }

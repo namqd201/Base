@@ -7,5 +7,7 @@ import java.util.Optional;
 public interface UserAccountRepository {
     Optional<UserAccount> findByUsername(String username);
 
+    Optional<UserAccount> findByUsernameWithRolesAndPermissions(String username);
+
     UserAccount save(UserAccount userAccount);
 }
