@@ -6,6 +6,8 @@ import com.tmdt.base.shared.config.exception.PermissionNameAlreadyExistsExceptio
 import com.tmdt.base.shared.config.exception.PermissionNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class UpdatePermissionUseCase {
     private final PermissionRepository permissionRepository;
@@ -14,7 +16,7 @@ public class UpdatePermissionUseCase {
         this.permissionRepository = permissionRepository;
     }
 
-    public Permission execute(Long id, String permissionName) {
+    public Permission updatePermission(Long id, String permissionName) {
         Permission permission = permissionRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new PermissionNotFoundException(id));
 
@@ -23,6 +25,8 @@ public class UpdatePermissionUseCase {
         }
 
         permission.setPermissionName(permissionName);
+        permission.setUpdatedAt(LocalDateTime.now());
+        permission.setIsDeleted(false);
 
         return permissionRepository.save(permission);
     }

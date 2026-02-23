@@ -5,20 +5,17 @@ import com.tmdt.base.application.usecase.permission.*;
 import com.tmdt.base.domain.model.Permission;
 import com.tmdt.base.presentation.dto.permission.CreatePermissionRequest;
 import com.tmdt.base.presentation.dto.permission.UpdatePermissionRequest;
-import com.tmdt.base.shared.response.PageResponse;
+import com.tmdt.base.shared.response.MessageDto;
+import com.tmdt.base.shared.response.SingleDataResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -51,9 +48,10 @@ public class PermissionController {
             @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(), mediaType = "application/json") }),
             @ApiResponse(responseCode = "400", content = { @Content(schema = @Schema()) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    public ResponseEntity<Permission> create(@Valid @RequestBody CreatePermissionRequest request) {
-        Permission created = createUseCase.execute(request.getPermissionName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public ResponseEntity<SingleDataResponse<MessageDto>> create(@Valid @RequestBody CreatePermissionRequest request) {
+        createUseCase.execute(request.getPermissionName());
+        MessageDto messageDto = new MessageDto("PMC001");
+        return ResponseEntity.ok().body(new SingleDataResponse<>(messageDto));
     }
 
     @PutMapping("/{id}")
@@ -62,7 +60,7 @@ public class PermissionController {
             @ApiResponse(responseCode = "400", content = { @Content(schema = @Schema()) }),
             @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     public Permission update(@PathVariable Long id, @Valid @RequestBody UpdatePermissionRequest request) {
-        return updateUseCase.execute(id, request.getPermissionName());
+        return updateUseCase.updatePermission(id, request.getPermissionName());
     }
 
     @DeleteMapping("/{id}")
