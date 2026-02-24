@@ -4,6 +4,10 @@ import com.tmdt.base.application.dto.ListUserDto;
 import com.tmdt.base.application.dto.UserDetailDto;
 import com.tmdt.base.application.usecase.user.GetUsersUseCase;
 import com.tmdt.base.application.usecase.user.GetUserByIdUseCase;
+import com.tmdt.base.application.usecase.user.UpdateUserStatusUseCase;
+import com.tmdt.base.presentation.dto.user.UpdateUserStatusRequest;
+import com.tmdt.base.shared.response.MessageDto;
+import com.tmdt.base.shared.response.SingleDataResponse;
 import com.tmdt.base.presentation.dto.response.PageResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,10 +26,12 @@ public class UserController {
 
     private final GetUsersUseCase getUsersUseCase;
     private final GetUserByIdUseCase getUserByIdUseCase;
+    private final UpdateUserStatusUseCase updateUserStatusUseCase;
 
-    public UserController(GetUsersUseCase getUsersUseCase, GetUserByIdUseCase getUserByIdUseCase) {
+    public UserController(GetUsersUseCase getUsersUseCase, GetUserByIdUseCase getUserByIdUseCase, UpdateUserStatusUseCase updateUserStatusUseCase) {
         this.getUsersUseCase = getUsersUseCase;
         this.getUserByIdUseCase = getUserByIdUseCase;
+        this.updateUserStatusUseCase = updateUserStatusUseCase;
     }
 
     @GetMapping("/{id}")
@@ -37,6 +43,18 @@ public class UserController {
     public ResponseEntity<UserDetailDto> getUserById(@PathVariable Long id) {
         UserDetailDto user = getUserByIdUseCase.execute(id);
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}/status")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(), mediaType = "application/json") }),
+            @ApiResponse(responseCode = "400", content = { @Content(schema = @Schema()) }),
+            @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
+    @PreAuthorize("hasAuthority('USER_UPDATE')")
+    public ResponseEntity<SingleDataResponse<MessageDto>> updateUserStatus(@PathVariable Long id, @RequestBody UpdateUserStatusRequest request) {
+        updateUserStatusUseCase.execute(id, request.getIsActive());
+        MessageDto messageDto = new MessageDto("USU002");
+        return ResponseEntity.ok().body(new SingleDataResponse<>(messageDto));
     }
 
     @GetMapping
