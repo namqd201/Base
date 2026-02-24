@@ -1,4 +1,4 @@
-package com.tmdt.base.presentation.dto.auth;
+package com.tmdt.base.presentation.dto.request.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

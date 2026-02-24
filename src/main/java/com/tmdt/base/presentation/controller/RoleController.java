@@ -2,9 +2,8 @@ package com.tmdt.base.presentation.controller;
 
 import com.tmdt.base.application.dto.RoleDto;
 import com.tmdt.base.application.usecase.role.*;
-import com.tmdt.base.domain.model.Role;
-import com.tmdt.base.presentation.dto.role.CreateRoleRequest;
-import com.tmdt.base.presentation.dto.role.UpdateRoleRequest;
+import com.tmdt.base.presentation.dto.request.role.CreateRoleRequest;
+import com.tmdt.base.presentation.dto.request.role.UpdateRoleRequest;
 import com.tmdt.base.shared.response.MessageDto;
 import com.tmdt.base.shared.response.SingleDataResponse;
 import io.swagger.v3.oas.annotations.media.Content;

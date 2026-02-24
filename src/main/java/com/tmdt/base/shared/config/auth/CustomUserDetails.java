@@ -2,6 +2,7 @@ package com.tmdt.base.shared.config.auth;
 
 import com.tmdt.base.domain.model.Role;
 import com.tmdt.base.domain.model.UserAccount;
+import com.tmdt.base.domain.model.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,24 +23,28 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        
-        Set<Role> roles = user.getRoles();
-        
-        // Add Role authorities
-        roles.stream()
+
+        Set<UserRole> userRoles = user.getUserRoles();
+
+        // Add Role authorities (filter out soft-deleted roles)
+        userRoles.stream()
+                .map(UserRole::getRole)
+                .filter(role -> role != null && !role.getIsDeleted())
                 .map(Role::getRoleName)
                 .map(roleName -> roleName.startsWith("ROLE_") ? roleName : "ROLE_" + roleName)
                 .map(SimpleGrantedAuthority::new)
                 .forEach(authorities::add);
-        
-        // Add Permission authorities from role_permission
-        roles.stream()
+
+        // Add Permission authorities from role_permission (filter out soft-deleted roles and permissions)
+        userRoles.stream()
+                .map(UserRole::getRole)
+                .filter(role -> role != null && !role.getIsDeleted())
                 .flatMap(role -> role.getRolePermissions().stream())
-                .filter(rolePermission -> rolePermission.getPermission() != null)
+                .filter(rolePermission -> rolePermission.getPermission() != null && !rolePermission.getPermission().getIsDeleted())
                 .map(rolePermission -> rolePermission.getPermission().getPermissionName())
                 .map(SimpleGrantedAuthority::new)
                 .forEach(authorities::add);
-        
+
         return authorities;
     }
 

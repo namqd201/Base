@@ -22,4 +22,7 @@ public class Role extends BaseEntity{
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Set<RolePermission> rolePermissions = new HashSet<>();
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    private Set<UserRole> userRoles = new HashSet<>();
 }

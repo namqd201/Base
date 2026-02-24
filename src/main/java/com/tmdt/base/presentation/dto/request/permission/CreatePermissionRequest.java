@@ -1,4 +1,4 @@
-package com.tmdt.base.presentation.dto.permission;
+package com.tmdt.base.presentation.dto.request.permission;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdatePermissionRequest {
+public class CreatePermissionRequest {
 
     @NotBlank(message = "Permission name is required")
     @Size(max = 200)

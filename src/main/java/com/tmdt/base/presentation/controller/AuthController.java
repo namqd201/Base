@@ -1,7 +1,7 @@
 package com.tmdt.base.presentation.controller;
 
 import com.tmdt.base.application.usecase.auth.interfaces.LoginUseCase;
-import com.tmdt.base.presentation.dto.auth.LoginRequest;
+import com.tmdt.base.presentation.dto.request.auth.LoginRequest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

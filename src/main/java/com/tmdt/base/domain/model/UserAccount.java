@@ -23,7 +23,7 @@ public class UserAccount extends BaseEntity{
     private String password;
 
     @Column(name = "display_name", nullable = false, length = 50)
-    private String displayname;
+    private String displayName;
 
     @Column(nullable = false, length = 70)
     private String email;
@@ -36,11 +36,6 @@ public class UserAccount extends BaseEntity{
 
     private String avatar;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<UserRole> userRoles = new HashSet<>();
 }

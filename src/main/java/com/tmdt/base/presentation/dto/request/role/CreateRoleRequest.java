@@ -1,4 +1,4 @@
-package com.tmdt.base.presentation.dto.role;
+package com.tmdt.base.presentation.dto.request.role;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UpdateRoleRequest {
+public class CreateRoleRequest {
 
     @NotBlank
     @Size(max = 50)
